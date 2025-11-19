@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}IMS System{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav style="padding: 10px; background: #111; color: #fff;">
+        <a href="/" style="color:white; margin-right: 15px;">Home</a>
+
+        {% if user.is_authenticated %}
+            <span>Welcome, {{ user.username }}</span>
+            <a href="{% url 'logout' %}" style="color:white; margin-left:15px;">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" style="color:white; margin-left:15px;">Login</a>
+            <a href="{% url 'signup' %}" style="color:white; margin-left:15px;">Signup</a>
+        {% endif %}
+    </nav>
+
+    <div class="content" style="padding: 20px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>
