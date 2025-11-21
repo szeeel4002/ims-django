@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Product, Purchase, Sale
+from inventory.models import Item, StockEntry
+from purchases.models import Purchase
 
-admin.site.register(Product)
+admin.site.register(Item)
+admin.site.register(StockEntry)
 admin.site.register(Purchase)
-admin.site.register(Sale)

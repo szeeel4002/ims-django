@@ -1,9 +1,16 @@
 from django.contrib import admin
 from django.urls import path, include
-from ims.views import home
+from . import views
 
 urlpatterns = [
-    path("", home, name="home"),
-    path("admin/", admin.site.urls),
-    path("accounts/", include("accounts.urls")),
+    path('admin/', admin.site.urls),
+
+    # home page
+    path('', views.home, name='home'),
+
+    # apps
+    path('accounts/', include('accounts.urls')),
+    path('inventory/', include('inventory.urls')),
+    path('purchases/', include('purchases.urls')),
+    path('sales/', include('sales.urls')),
 ]

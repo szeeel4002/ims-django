@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from inventory.models import Purchase, Sale, Product
 from django.contrib import messages
 from django.db import transaction
+from django.shortcuts import render
+
+def sales_home(request):
+    return render(request, "home.html")
+
 
 @transaction.atomic
 def add_sale(request):
