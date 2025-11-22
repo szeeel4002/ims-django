@@ -15,6 +15,8 @@ urlpatterns = [
     path('inventory/', include('inventory.urls')),
     path('purchases/', include('purchases.urls')),
     path('sales/', include('sales.urls')),
+    path("", home, name="dashboard"),
+
 ]
 
 if settings.DEBUG:

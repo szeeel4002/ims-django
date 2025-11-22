@@ -2,23 +2,24 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from .forms import PurchaseForm
-from .models import Purchase
-from inventory.models import StockEntry
+from .models import Purchase, StockEntry
 
 
 def add_purchase(request):
     if request.method == "POST":
         form = PurchaseForm(request.POST)
         if form.is_valid():
-            purchase = form.save()
+            purchase = form.save(commit=False)
+            purchase.remaining_qty = purchase.quantity  # initial stock
+            purchase.save()
 
-            # Create StockEntry for FIFO
+            # automatically create stock entry
             StockEntry.objects.create(
                 purchase=purchase,
                 remaining_qty=purchase.quantity
             )
 
-            messages.success(request, "Purchase added and stock updated!")
+            messages.success(request, "Purchase added successfully!")
             return redirect("add_purchase")
     else:
         form = PurchaseForm()

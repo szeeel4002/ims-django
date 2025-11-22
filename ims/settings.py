@@ -32,17 +32,24 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = "accounts.User"
-
-# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+
+    # Authentication FIRST → adds request.user
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    # Your middleware AFTER authentication (only once)
+    'ims.middleware.LoginRequiredMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
 
 # Add LoginRequired middleware (from remote branch)
 MIDDLEWARE.insert(2, 'ims.middleware.LoginRequiredMiddleware')

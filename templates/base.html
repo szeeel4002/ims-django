@@ -1,39 +1,48 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}IMS System{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}IMS{% endblock %}</title>
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
+
 <body>
 
-    <!-- Navbar -->
-    <nav style="padding: 10px; background: #111; color: #fff;">
-        <a href="/" style="color:white; margin-right: 15px;">Home</a>
+    <!-- ================= SIDEBAR ================= -->
+    <div class="sidebar">
+        <h2>IMS</h2>
 
-        {% if user.is_authenticated %}
-            <span>Welcome, {{ user.username }}</span>
-            <a href="{% url 'logout' %}" style="color:white; margin-left:15px;">Logout</a>
-        {% else %}
-            <a href="{% url 'login' %}" style="color:white; margin-left:15px;">Login</a>
-            <a href="{% url 'signup' %}" style="color:white; margin-left:15px;">Signup</a>
-        {% endif %}
-    </nav>
+        <a href="{% url 'dashboard' %}" 
+           class="{% if request.path == '/' %}active{% endif %}">
+           Dashboard
+        </a>
 
-    <div class="content" style="padding: 20px;">
-        {% if messages %}
-<ul style="color: green;">
-    {% for message in messages %}
-        <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+        <a href="{% url 'inventory_home' %}">Inventory</a>
+        <a href="{% url 'add_purchase' %}">Add Purchase</a>
+        <a href="{% url 'add_sale' %}">Add Sale</a>
 
-        {% block content %}
-        {% endblock %}
+        <a href="{% url 'logout' %}" style="margin-top:20px; color:#f87171;">
+            Logout
+        </a>
+
+        <footer>© 2025 IMS</footer>
+    </div>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <div class="main-content">
+        
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+            <div class="user-info">Hi, {{ request.user.username }}</div>
+        </div>
+
+        <!-- CONTENT -->
+        {% block content %}{% endblock %}
     </div>
 
 </body>

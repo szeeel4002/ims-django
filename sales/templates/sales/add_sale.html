@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Add Sale{% endblock %}
+{% block page_title %}Add Sale{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2>Add Sale</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Item</label>
+        <select name="item" class="form-control" required>
+            {% for item in items %}
+                <option value="{{ item.id }}">{{ item.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" class="form-control" required>
+
+        <label>Selling Price</label>
+        <input type="number" name="sale_price" class="form-control" required step="0.01">
+
+        <button class="btn-primary" type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

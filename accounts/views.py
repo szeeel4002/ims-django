@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
+from .forms import LoginForm
 
 from .forms import SignupForm, UserUpdateForm, CustomPasswordChangeForm
 
@@ -12,38 +13,43 @@ from .forms import SignupForm, UserUpdateForm, CustomPasswordChangeForm
 # --------------------------
 def signup_view(request):
     if request.method == "POST":
-        form = SignupForm(request.POST, request.FILES)
+        form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Account created successfully! Please log in.")
-            return redirect("login")
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Account created successfully!")
+            return redirect("dashboard")
     else:
         form = SignupForm()
 
     return render(request, "accounts/signup.html", {"form": form})
 
 
+
 # --------------------------
 # LOGIN VIEW
 # --------------------------
+
+
+
+
 def login_view(request):
+    form = LoginForm()
+
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
 
-        user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect("/")
+            else:
+                messages.error(request, "Invalid username or password")
 
-        if user is not None:
-            login(request, user)
-
-            # Save session data
-            request.session["last_login_time"] = str(timezone.now())
-
-            return redirect("home")
-        else:
-            messages.error(request, "Invalid username or password.")
-
-    return render(request, "accounts/login.html")
+    return render(request, "accounts/login.html", {"form": form})
 
 
 # --------------------------

@@ -11,8 +11,10 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0002_alter_group_name_alter_permission_name_and_more'),
-    ]
+    ('auth', '0001_initial'),
+    # keep any other valid app dependencies here
+]
+
 
     operations = [
         migrations.CreateModel(

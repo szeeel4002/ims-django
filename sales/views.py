@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
-from inventory.models import Purchase, Sale, Product
 from django.contrib import messages
 from django.db import transaction
-from django.shortcuts import render
+
+from inventory.models import Item
+from purchases.models import Purchase
+from .models import Sale
+
 
 def sales_home(request):
     return render(request, "home.html")
@@ -11,16 +14,18 @@ def sales_home(request):
 @transaction.atomic
 def add_sale(request):
     if request.method == "POST":
-        product_id = request.POST.get("product")
+        item_id = request.POST.get("item")
         quantity = float(request.POST.get("quantity"))
         sale_price = float(request.POST.get("sale_price"))
 
-        product = Product.objects.get(id=product_id)
+        # Get selected item
+        item = Item.objects.get(id=item_id)
 
-        # 1️⃣ Get all purchase batches with remaining stock
+        # Get all Purchase batches with remaining stock for this item (FIFO)
         purchase_batches = Purchase.objects.filter(
-            product=product, remaining_qty__gt=0
-        ).order_by("purchase_date")  # FIFO
+            item=item,
+            remaining_qty__gt=0
+        ).order_by("purchase_date")
 
         qty_needed = quantity
 
@@ -43,15 +48,16 @@ def add_sale(request):
             messages.error(request, "Not enough stock for this sale.")
             return redirect("add_sale")
 
-        # 2️⃣ Create the sale record
+        # Create sale record
         Sale.objects.create(
-            product=product,
+            item=item,
             quantity=quantity,
-            sale_price=sale_price
+            selling_price_per_unit=sale_price
         )
 
         messages.success(request, "Sale added successfully.")
         return redirect("sales_list")
 
-    products = Product.objects.all()
-    return render(request, "sales/add_sale.html", {"products": products})
+    # Load items for dropdown
+    items = Item.objects.all()
+    return render(request, "sales/add_sale.html", {"items": items})

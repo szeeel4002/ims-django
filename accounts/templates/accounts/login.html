@@ -1,19 +1,39 @@
-{% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% load static %}
 
-{% block content %}
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
 
-<form method="post">
-    {% csrf_token %}
-    <label>Username</label><br>
-    <input type="text" name="username" required><br><br>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 
-    <label>Password</label><br>
-    <input type="password" name="password" required><br><br>
+<body>
 
-    <button type="submit">Login</button>
-</form>
+<div class="auth-container">
 
-<p>Don't have an account? <a href="{% url 'signup' %}">Signup</a></p>
-{% endblock %}
+    <h2>Login</h2>
+
+    <!-- Show Django messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn-primary">Login</button>
+    </form>
+
+    <div class="auth-links">
+        <a href="{% url 'signup' %}">Create an account</a>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
 from django.contrib import admin
-from inventory.models import Item, StockEntry
-from purchases.models import Purchase
+from .models import Item
 
-admin.site.register(Item)
-admin.site.register(StockEntry)
-admin.site.register(Purchase)
+@admin.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ("name",)

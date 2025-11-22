@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-cards">
+
+    <div class="card">
+        <h3>Total Items</h3>
+        <p>{{ total_items }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Purchases</h3>
+        <p>{{ total_purchases }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Sales</h3>
+        <p>{{ total_sales }}</p>
+    </div>
+
+</div>
+
+{% endblock %}
