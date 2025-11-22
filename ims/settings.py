@@ -39,11 +39,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 
-    # Authentication FIRST → adds request.user
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-
-    # Your middleware AFTER authentication (only once)
-    'ims.middleware.LoginRequiredMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',   # MUST come first
+    'ims.middleware.LoginRequiredMiddleware',                    # custom
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
