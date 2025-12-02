@@ -35,12 +35,14 @@ AUTH_USER_MODEL = "accounts.User"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 
-    'django.contrib.auth.middleware.AuthenticationMiddleware',   # MUST come first
-    'ims.middleware.LoginRequiredMiddleware',                    # custom
+    # Authentication must come BEFORE your custom middleware
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    # Now safe to use request.user
+    'ims.middleware.LoginRequiredMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

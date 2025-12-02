@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
@@ -23,11 +22,18 @@
     {% endif %}
 
     <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+    {% csrf_token %}
 
-        <button type="submit" class="btn-primary">Login</button>
-    </form>
+    <label>Username</label>
+    <input type="text" name="username" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <button type="submit" class="btn-primary">Login</button>
+</form>
+
+    
 
     <div class="auth-links">
         <a href="{% url 'signup' %}">Create an account</a>

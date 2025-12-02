@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <h2>Inventory Dashboard</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>{{ total_products }}</h3>
+            <p>Total Products</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ total_purchases }}</h3>
+            <p>Total Purchases</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ total_sales }}</h3>
+            <p>Total Sales</p>
+        </div>
+
+        <div class="card warning">
+            <h3>{{ low_stock_count }}</h3>
+            <p>Low Stock Items</p>
+        </div>
+
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'add_product' %}" class="btn-primary">Add Product</a>
+        <a href="{% url 'purchase_home' %}" class="btn-primary">Purchases</a>
+        <a href="{% url 'sales_home' %}" class="btn-primary">Sales</a>
+    </div>
+
+</div>
+
+</body>
+</html>

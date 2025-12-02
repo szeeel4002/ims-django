@@ -1,112 +1,65 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.utils import timezone
-from .forms import LoginForm
+from django.contrib.auth import authenticate, login, logout
+from .forms import SignupForm
+from django.shortcuts import render
+from inventory.models import Product
+from purchases.models import Purchase
+from sales.models import Sale
 
-from .forms import SignupForm, UserUpdateForm, CustomPasswordChangeForm
 
-
-# --------------------------
-# SIGNUP VIEW
-# --------------------------
-def signup_view(request):
+def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            messages.success(request, "Account created successfully!")
-            return redirect("dashboard")
+            messages.success(request, "Account created successfully! Please login.")
+
+            # Redirect with username pre-filled
+            return redirect(f"/accounts/login/?u={user.username}")
     else:
         form = SignupForm()
 
     return render(request, "accounts/signup.html", {"form": form})
 
 
-
-# --------------------------
-# LOGIN VIEW
-# --------------------------
-
-
-
-
 def login_view(request):
-    form = LoginForm()
-
     if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
-            user = authenticate(request, username=username, password=password)
-            if user:
-                login(request, user)
-                return redirect("/")
-            else:
-                messages.error(request, "Invalid username or password")
+        user = authenticate(request, username=username, password=password)
 
-    return render(request, "accounts/login.html", {"form": form})
+        if user is not None:
+            login(request, user)
+            messages.success(request, f"Welcome back, {username}!")
+            return redirect("dashboard")   # ✅ Redirect instantly
+        else:
+            messages.error(request, "Invalid username or password")
+
+    return render(request, "accounts/login.html")
 
 
-# --------------------------
-# LOGOUT VIEW
-# --------------------------
+
+
 def logout_view(request):
     logout(request)
-    messages.success(request, "You have logged out.")
     return redirect("login")
 
 
-# --------------------------
-# DASHBOARD VIEW
-# --------------------------
-@login_required
-def dashboard_view(request):
-    return render(request, "accounts/dashboard.html")
 
 
-# --------------------------
-# PROFILE VIEW
-# --------------------------
-@login_required
-def profile_view(request):
-    return render(request, "accounts/profile.html")
+def dashboard(request):
+    total_products = Product.objects.count()
+    total_purchases = Purchase.objects.count()
+    total_sales = Sale.objects.count()
+    low_stock_count = Product.objects.filter(quantity__lt=5).count()
 
+    context = {
+        "total_products": total_products,
+        "total_purchases": total_purchases,
+        "total_sales": total_sales,
+        "low_stock_count": low_stock_count,
+    }
+    return render(request, "dashboard.html", context)
 
-# --------------------------
-# PROFILE EDIT VIEW
-# --------------------------
-@login_required
-def profile_edit(request):
-    if request.method == "POST":
-        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Profile updated successfully.")
-            return redirect("profile")
-    else:
-        form = UserUpdateForm(instance=request.user)
-
-    return render(request, "accounts/profile_edit.html", {"form": form})
-
-
-# --------------------------
-# CHANGE PASSWORD VIEW
-# --------------------------
-@login_required
-def change_password(request):
-    if request.method == "POST":
-        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # keep user logged in
-            messages.success(request, "Password updated successfully.")
-            return redirect("profile")
-    else:
-        form = CustomPasswordChangeForm(user=request.user)
-
-    return render(request, "accounts/change_password.html", {"form": form})

@@ -38,21 +38,25 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 # --------------------------
 
 
-class SignupForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+class SignupForm(UserCreationForm):
+    username = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(attrs={'placeholder': 'Username'}),
+        help_text=''   # remove default help text
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': 'Email Address'}),
+        required=True
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
+        help_text=''   # remove password help text too
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
+        help_text=''
+    )
 
     class Meta:
         model = User
-        fields = ["username", "email", "password"]
-
-    def clean(self):
-        cleaned_data = super().clean()
-        p1 = cleaned_data.get("password")
-        p2 = cleaned_data.get("confirm_password")
-
-        if p1 != p2:
-            raise forms.ValidationError("Passwords do not match!")
-
-        return cleaned_data
-
+        fields = ['username', 'email', 'password1', 'password2']
