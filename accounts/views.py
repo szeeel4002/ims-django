@@ -7,6 +7,7 @@ from django.shortcuts import render
 from inventory.models import Product
 from purchases.models import Purchase
 from sales.models import Sale
+from ims.utils import calculate_profit
 
 
 def signup(request):
@@ -108,3 +109,24 @@ def dashboard(request):
     }
 
     return render(request, "accounts/dashboard.html", context)
+
+
+
+def dashboard(request):
+    profit_data = calculate_profit()
+
+    context = {
+        "total_products": Product.objects.count(),
+        "total_stock_quantity": Product.objects.aggregate(total=models.Sum('quantity'))['total'] or 0,
+        "total_purchase_value": profit_data['total_purchase'],
+        "total_sales_value": profit_data['total_sales'],
+        "net_profit": profit_data['net_profit'],
+    }
+    return render(request, "accounts/dashboard.html", context)
+
+def dashboard(request):
+    return render(request, "accounts/dashboard.html", {
+        "user": request.user,          # make user available
+        "request": request             # make request available in template
+    })
+

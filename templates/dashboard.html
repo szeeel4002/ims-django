@@ -1,27 +1,21 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
-
-{% block page_title %}Dashboard{% endblock %}
 
 {% block content %}
 
-<div class="dashboard-cards">
+<h1>Welcome Back, {{ user.username }}</h1>
 
-    <div class="card">
-        <h3>Total Items</h3>
-        <p>{{ total_items }}</p>
-    </div>
-
-    <div class="card">
-        <h3>Total Purchases</h3>
-        <p>{{ total_purchases }}</p>
-    </div>
-
-    <div class="card">
-        <h3>Total Sales</h3>
-        <p>{{ total_sales }}</p>
-    </div>
-
+{% if request.user.is_superuser %}
+<div style="text-align:right; margin-bottom:15px;">
+    <a href="/admin/" 
+       class="btn btn-dark" 
+       style="padding:8px 14px; background:#333; color:white; border-radius:6px; text-decoration:none;">
+        ⚙ Admin Panel
+    </a>
 </div>
+{% endif %}
+
+<p>Total Products: {{ total_products }}</p>
+<p>Total Purchases: {{ total_purchases }}</p>
+<p>Total Sales: {{ total_sales }}</p>
 
 {% endblock %}

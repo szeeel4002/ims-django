@@ -20,6 +20,12 @@
         <td>{{ s.price_per_unit }}</td>
         <td>{{ s.total_price }}</td>
         <td>{{ s.date }}</td>
+        <td>
+            <a href="{% url 'generate_invoice' sale.id %}" class="btn btn-primary">
+    Download Invoice PDF
+</a>
+
+        </td>
     </tr>
     {% endfor %}
 </table>

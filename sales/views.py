@@ -2,6 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import SaleForm
 from inventory.models import Product
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from .models import Sale
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from .models import Sale
+
+
 
 def add_sale(request):
     if request.method == "POST":
@@ -43,3 +52,17 @@ def sale_list(request):
     from .models import Sale
     sales = Sale.objects.select_related("product").order_by("-date")
     return render(request, "sales/sale_list.html", {"sales": sales})
+
+
+
+def generate_invoice(request, sale_id):
+    sale = Sale.objects.get(id=sale_id)
+
+    html = render_to_string("sales/invoice_template.html", {"sale": sale})
+
+    pdf = pdfkit.from_string(html, False)
+
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{sale_id}.pdf"'
+
+    return response

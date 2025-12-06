@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import add_sale, sale_list
+from . import views
 
 urlpatterns = [
-    path("add/", add_sale, name="add_sale"),
-    path("list/", sale_list, name="sale_list"),
+    path('list/', views.sale_list, name="sale_list"),
+    path('add/', views.add_sale, name="add_sale"),
+    path('invoice/<int:sale_id>/', views.generate_invoice, name="generate_invoice"),
 ]
