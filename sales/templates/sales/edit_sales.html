@@ -2,12 +2,13 @@
 {% block content %}
 <div class="container mt-4">
 
-    <h2>Add Sale</h2>
+    <h2>Edit Sale</h2>
+
     <form method="POST" class="mt-3">
         {% csrf_token %}
         {{ form.as_p }}
 
-        <button class="btn btn-success">Save Sale</button>
+        <button class="btn btn-primary">Update Sale</button>
         <a href="{% url 'sale_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
 

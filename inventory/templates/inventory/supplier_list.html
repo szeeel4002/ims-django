@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block page_title %}Suppliers{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">Supplier List</h2>
+
+    <a href="{% url 'supplier_create' %}" class="btn btn-primary mb-3">
+        + Add Supplier
+    </a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th width="180">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for supplier in suppliers %}
+            <tr>
+                <td>{{ supplier.name }}</td>
+                <td>{{ supplier.phone }}</td>
+                <td>{{ supplier.email }}</td>
+                <td>{{ supplier.address }}</td>
+
+                <td>
+                    <a href="{% url 'supplier_edit' supplier.id %}" 
+                       class="btn btn-warning btn-sm">Edit</a>
+
+                    <a href="{% url 'supplier_delete' supplier.id %}" 
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this supplier?')">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No suppliers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

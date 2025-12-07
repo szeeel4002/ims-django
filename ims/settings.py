@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'inventory',
     'purchases',
     'sales',
+    'reports',
+
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -66,6 +68,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # ⭐ Custom Global Context Processor
+                'ims.context_processors.low_stock_context',
             ],
         },
     },

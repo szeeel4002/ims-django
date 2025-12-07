@@ -12,18 +12,32 @@
 
 <body>
 
-    <!-- ================= SIDEBAR ================= -->
+    <!-- =============== SIDEBAR =============== -->
     <div class="sidebar">
         <h2>IMS</h2>
 
-        <a href="{% url 'dashboard' %}" 
+        <a href="{% url 'dashboard' %}"
            class="{% if request.path == '/' %}active{% endif %}">
-           Dashboard
+            Dashboard
         </a>
 
         <a href="{% url 'inventory_home' %}">Inventory</a>
         <a href="{% url 'add_purchase' %}">Add Purchase</a>
         <a href="{% url 'add_sale' %}">Add Sale</a>
+
+        <!-- Low Stock alert — Shown if items low -->
+        {% if alert_low_stock %}
+        <div class="alert-box">
+            ⚠ Low Stock Items: <strong>{{ alert_low_stock|length }}</strong>
+        </div>
+        {% endif %}
+
+        <!-- Admin Panel (only visible to superuser) -->
+        {% if request.user.is_superuser %}
+        <a href="/admin/" style="color:white; background:#222; padding:8px; border-radius:6px; margin-top:10px;">
+            ⚙ Admin Panel
+        </a>
+        {% endif %}
 
         <a href="{% url 'logout' %}" style="margin-top:20px; color:#f87171;">
             Logout
@@ -32,18 +46,31 @@
         <footer>© 2025 IMS</footer>
     </div>
 
-    <!-- ================= MAIN CONTENT ================= -->
+    <!-- =============== MAIN CONTENT =============== -->
     <div class="main-content">
-        
+
         <!-- NAVBAR -->
         <div class="navbar">
             <h1>{% block page_title %}Dashboard{% endblock %}</h1>
-            <div class="user-info">Hi, {{ request.user.username }}</div>
+
+            <div class="user-info">
+                Hi, {{ request.user.username }}
+            </div>
         </div>
 
-        <!-- CONTENT -->
+        <!-- DYNAMIC PAGE CONTENT -->
         {% block content %}{% endblock %}
     </div>
+    {% if low_stock_sample %}
+<div class="alert alert-warning alert-dismissible fade show m-2" role="alert">
+    <strong>Low Stock Alert:</strong>
+    {% for p in low_stock_sample %}
+        {{ p.name }} ({{ p.quantity }}){% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %}
+
 
 </body>
 </html>

@@ -5,6 +5,22 @@
     <h2>Products</h2>
 
     <a href="{% url 'add_product' %}" class="btn-primary">+ Add Product</a>
+    <tbody>
+    {% for product in products %}
+        <tr {% if product.quantity <= product.low_stock_limit %}class="table-danger"{% endif %}>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.low_stock_limit }}</td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">No products found.</td>
+        </tr>
+    {% endfor %}
+</tbody>
+
 
     <table class="table">
         <tr>

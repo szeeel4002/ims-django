@@ -1,13 +1,13 @@
 from django import forms
-from .models import Product
+from .models import Customer, Supplier
 
-class ProductForm(forms.ModelForm):
+class CustomerForm(forms.ModelForm):
     class Meta:
-        model = Product
-        fields = ["name", "category", "quantity", "price"]
-        widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control"}),
-            "category": forms.TextInput(attrs={"class": "form-control"}),
-            "quantity": forms.NumberInput(attrs={"class": "form-control"}),
-            "price": forms.NumberInput(attrs={"class": "form-control"}),
-        }
+        model = Customer
+        fields = ["name", "phone", "email", "address"]
+
+
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ["name", "phone", "email", "address"]

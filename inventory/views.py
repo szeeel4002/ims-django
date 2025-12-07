@@ -1,48 +1,94 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product
-from .forms import ProductForm
 from django.contrib import messages
+from .models import Customer, Supplier
+from .forms import CustomerForm, SupplierForm
 
-def inventory_home(request):
-    return render(request, "home.html")   # or create a template later
+# ===========================
+#       DASHBOARD VIEW
+# ===========================
+def dashboard(request):
+    return render(request, "dashboard.html")
 
 
+# ===========================
+#       CUSTOMERS
+# ===========================
+def customer_list(request):
+    customers = Customer.objects.all().order_by("name")
+    return render(request, "inventory/customer_list.html", {"customers": customers})
 
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, "inventory/product_list.html", {"products": products})
 
-
-def add_product(request):
+def add_customer(request):
     if request.method == "POST":
-        form = ProductForm(request.POST)
+        form = CustomerForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Product added successfully!")
-            return redirect("product_list")
+            messages.success(request, "Customer added successfully!")
+            return redirect("customer_list")
     else:
-        form = ProductForm()
+        form = CustomerForm()
+    return render(request, "inventory/customer_form.html", {"form": form, "title": "Add Customer"})
 
-    return render(request, "inventory/add_product.html", {"form": form})
 
-
-def edit_product(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-
+def edit_customer(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
     if request.method == "POST":
-        form = ProductForm(request.POST, instance=product)
+        form = CustomerForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
-            messages.success(request, "Product updated successfully!")
-            return redirect("product_list")
+            messages.success(request, "Customer updated successfully!")
+            return redirect("customer_list")
     else:
-        form = ProductForm(instance=product)
+        form = CustomerForm(instance=customer)
+    return render(request, "inventory/customer_form.html", {"form": form, "title": "Edit Customer"})
 
-    return render(request, "inventory/edit_product.html", {"form": form})
+
+def delete_customer(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
+    if request.method == "POST":
+        customer.delete()
+        messages.success(request, "Customer deleted!")
+        return redirect("customer_list")
+    return render(request, "inventory/customer_confirm_delete.html", {"customer": customer})
 
 
-def delete_product(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    product.delete()
-    messages.success(request, "Product deleted successfully!")
-    return redirect("product_list")
+# ===========================
+#       SUPPLIERS
+# ===========================
+def supplier_list(request):
+    suppliers = Supplier.objects.all().order_by("name")
+    return render(request, "inventory/supplier_list.html", {"suppliers": suppliers})
+
+
+def add_supplier(request):
+    if request.method == "POST":
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Supplier added successfully!")
+            return redirect("supplier_list")
+    else:
+        form = SupplierForm()
+    return render(request, "inventory/supplier_form.html", {"form": form, "title": "Add Supplier"})
+
+
+def edit_supplier(request, supplier_id):
+    supplier = get_object_or_404(Supplier, id=supplier_id)
+    if request.method == "POST":
+        form = SupplierForm(request.POST, instance=supplier)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Supplier updated successfully!")
+            return redirect("supplier_list")
+    else:
+        form = SupplierForm(instance=supplier)
+    return render(request, "inventory/supplier_form.html", {"form": form, "title": "Edit Supplier"})
+
+
+def delete_supplier(request, supplier_id):
+    supplier = get_object_or_404(Supplier, id=supplier_id)
+    if request.method == "POST":
+        supplier.delete()
+        messages.success(request, "Supplier deleted!")
+        return redirect("supplier_list")
+    return render(request, "inventory/supplier_confirm_delete.html", {"supplier": supplier})
