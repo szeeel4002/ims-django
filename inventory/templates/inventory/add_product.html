@@ -1,15 +1,15 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% extends "base.html" %}
 
-<div class="form-container">
+{% block page_title %}Add Product{% endblock %}
 
-    <h2>Add Product</h2>
+{% block content %}
+<h2>Add Product</h2>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-        <button class="btn-primary">Add</button>
-    </form>
-
-</div>
+    <button class="btn btn-primary" type="submit">Save</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

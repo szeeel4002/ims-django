@@ -1,21 +1,72 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f3;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+        .box {
+            width: 370px;
+            padding: 25px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+        .login-link {
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 
-<div class="auth-container">
-    <h2>Create Account</h2>
+<div class="box">
+    <h2>Create an Account</h2>
 
-    {% for msg in messages %}
-        <div class="alert alert-{{ msg.tags }}">{{ msg }}</div>
-    {% endfor %}
+    {% if messages %}
+        {% for m in messages %}
+            <p class="error">{{ m }}</p>
+        {% endfor %}
+    {% endif %}
 
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        <input type="text" name="username" placeholder="Choose username" required>
+        <input type="email" name="email" placeholder="Your email" required>
+        <input type="password" name="password" placeholder="Create password" required>
+        <input type="password" name="confirm" placeholder="Confirm password" required>
 
-        <button class="btn-primary">Sign Up</button>
+        <button type="submit">Sign Up</button>
     </form>
 
-    <div class="auth-links">
-        <a href="{% url 'login' %}">Already have an account? Login</a>
+    <div class="login-link">
+        Already have an account?  
+        <a href="{% url 'login' %}">Login</a>
     </div>
 </div>
+
+</body>
+</html>

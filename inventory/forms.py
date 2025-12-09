@@ -1,13 +1,20 @@
 from django import forms
-from .models import Customer, Supplier
+from .models import Product, Supplier, Customer
 
-class CustomerForm(forms.ModelForm):
+
+class ProductForm(forms.ModelForm):
     class Meta:
-        model = Customer
-        fields = ["name", "phone", "email", "address"]
+        model = Product
+        fields = ["name", "category", "stock", "price"]
 
 
 class SupplierForm(forms.ModelForm):
     class Meta:
         model = Supplier
-        fields = ["name", "phone", "email", "address"]
+        fields = ["name", "email", "phone"]
+
+
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ["name", "email", "phone"]

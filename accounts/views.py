@@ -1,136 +1,58 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from .forms import SignupForm
-from django.shortcuts import render
-from inventory.models import Product
-from purchases.models import Purchase
-from sales.models import Sale
-from ims.utils import calculate_profit
-
-
-def signup(request):
-    if request.method == "POST":
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            messages.success(request, "Account created successfully! Please login.")
-
-            # Redirect with username pre-filled
-            return redirect(f"/accounts/login/?u={user.username}")
-    else:
-        form = SignupForm()
-
-    return render(request, "accounts/signup.html", {"form": form})
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
-def user_login(request):
+
+def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect("/")
+
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        confirm = request.POST.get("confirm")
+
+        if password != confirm:
+            messages.error(request, "Passwords do not match")
+            return redirect("signup")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already taken")
+            return redirect("signup")
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
+        messages.success(request, "Account created successfully! Please log in.")
+        return redirect("login")
+
+    return render(request, "accounts/signup.html")
+
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect("/")
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user:
             login(request, user)
-            return redirect("dashboard")   # redirect to home page
+            return redirect("/")
         else:
             messages.error(request, "Invalid username or password")
 
     return render(request, "accounts/login.html")
 
 
-
-
-
 def logout_view(request):
     logout(request)
     return redirect("login")
-
-
-
-
-
-
-
-
-
-@login_required
-def dashboard(request):
-    # --- KPI Metrics ---
-    total_products = Product.objects.count()
-    total_stock_quantity = (
-        Product.objects.aggregate(total_qty=Sum("quantity"))["total_qty"] or 0
-    )
-
-    total_purchase_value = (
-        Purchase.objects.aggregate(total=Sum("total_price"))["total"] or 0
-    )
-    total_sales_value = (
-        Sale.objects.aggregate(total=Sum("total_price"))["total"] or 0
-    )
-
-    net_profit = total_sales_value - total_purchase_value
-
-    # --- Last 7 days chart data (Purchases vs Sales) ---
-    today = now().date()
-    labels = []
-    purchase_data = []
-    sales_data = []
-
-    for i in range(6, -1, -1):
-        day = today - timedelta(days=i)
-        labels.append(day.strftime("%d-%b"))  # e.g., 02-Dec
-
-        day_purchases = (
-            Purchase.objects.filter(date=day)
-            .aggregate(total=Sum("total_price"))["total"]
-            or 0
-        )
-        day_sales = (
-            Sale.objects.filter(date=day)
-            .aggregate(total=Sum("total_price"))["total"]
-            or 0
-        )
-
-        purchase_data.append(float(day_purchases))
-        sales_data.append(float(day_sales))
-
-    context = {
-        "total_products": total_products,
-        "total_stock_quantity": total_stock_quantity,
-        "total_purchase_value": total_purchase_value,
-        "total_sales_value": total_sales_value,
-        "net_profit": net_profit,
-        "labels": labels,
-        "purchase_data": purchase_data,
-        "sales_data": sales_data,
-    }
-
-    return render(request, "accounts/dashboard.html", context)
-
-
-
-def dashboard(request):
-    profit_data = calculate_profit()
-
-    context = {
-        "total_products": Product.objects.count(),
-        "total_stock_quantity": Product.objects.aggregate(total=models.Sum('quantity'))['total'] or 0,
-        "total_purchase_value": profit_data['total_purchase'],
-        "total_sales_value": profit_data['total_sales'],
-        "net_profit": profit_data['net_profit'],
-    }
-    return render(request, "accounts/dashboard.html", context)
-
-def dashboard(request):
-    return render(request, "accounts/dashboard.html", {
-        "user": request.user,          # make user available
-        "request": request             # make request available in template
-    })
-

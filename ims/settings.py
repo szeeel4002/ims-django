@@ -1,103 +1,88 @@
-import os
 from pathlib import Path
-import environ
-import dj_database_url
 
-# BASE DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ENV SETUP
-env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+SECRET_KEY = "django-insecure-temp-key-change-later"
+DEBUG = True
 
-# SECRET KEY & DEBUG
-SECRET_KEY = env("SECRET_KEY")
-DEBUG = env.bool("DEBUG", default=True)
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
+# ---------------------
+# Installed Apps
+# ---------------------
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 
-    # Apps
-    'accounts',
-    'inventory',
-    'purchases',
-    'sales',
-    'reports',
-
+    # Project apps
+    "accounts",
+    "inventory",
+    "purchases",
+    "sales",
+    "reports",
 ]
 
-AUTH_USER_MODEL = "accounts.User"
+
+# ---------------------
+# Middleware
+# ---------------------
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-
-    # Authentication must come BEFORE your custom middleware
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-
-    # Now safe to use request.user
-    'ims.middleware.LoginRequiredMiddleware',
-
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "ims.middleware.LoginRequiredMiddleware",   # custom
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 
+ROOT_URLCONF = "ims.urls"
 
-# Add LoginRequired middleware (from remote branch)
-MIDDLEWARE.insert(2, 'ims.middleware.LoginRequiredMiddleware')
 
-ROOT_URLCONF = 'ims.urls'
-
-# TEMPLATES
+# ---------------------
+# Templates
+# ---------------------
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-
-                # ⭐ Custom Global Context Processor
-                'ims.context_processors.low_stock_context',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "ims.context_processors.low_stock_context",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'ims.wsgi.application'
 
-# DATABASE
+WSGI_APPLICATION = "ims.wsgi.application"
+
+
+# ---------------------
+# Database (SQLite)
+# ---------------------
 DATABASES = {
-    "default": dj_database_url.parse(env("DATABASE_URL"))
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
 
-# PASSWORD VALIDATION
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
 
-# LANGUAGE & TIMEZONE
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
-# STATIC FILES
+# ---------------------
+# Static & Media
+# ---------------------
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -105,13 +90,16 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+
+# ---------------------
+# Authentication
+# ---------------------
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+
+
+# ---------------------
+# Other Settings
+# ---------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Auth redirects
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
-
-# Email (from remote)
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-DEFAULT_FROM_EMAIL = "noreply@ims.local"

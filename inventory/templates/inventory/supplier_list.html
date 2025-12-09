@@ -1,54 +1,41 @@
 {% extends "base.html" %}
-{% block page_title %}Suppliers{% endblock %}
+
 {% block content %}
+<h2>Supplier List</h2>
 
-<div class="container mt-4">
+<a href="{% url 'supplier_create' %}" class="btn btn-primary mb-3">Add Supplier</a>
 
-    <h2 class="mb-3">Supplier List</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Company</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
 
-    <a href="{% url 'supplier_create' %}" class="btn btn-primary mb-3">
-        + Add Supplier
-    </a>
+    <tbody>
+        {% for supplier in suppliers %}
+        <tr>
+            <td>{{ supplier.name }}</td>
+            <td>{{ supplier.email }}</td>
+            <td>{{ supplier.phone }}</td>
+            <td>{{ supplier.company }}</td>
 
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th width="180">Actions</th>
-            </tr>
-        </thead>
+            <td>
+                <a href="{% url 'supplier_update' supplier.id %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'supplier_delete' supplier.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No suppliers found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 
-        <tbody>
-            {% for supplier in suppliers %}
-            <tr>
-                <td>{{ supplier.name }}</td>
-                <td>{{ supplier.phone }}</td>
-                <td>{{ supplier.email }}</td>
-                <td>{{ supplier.address }}</td>
-
-                <td>
-                    <a href="{% url 'supplier_edit' supplier.id %}" 
-                       class="btn btn-warning btn-sm">Edit</a>
-
-                    <a href="{% url 'supplier_delete' supplier.id %}" 
-                       class="btn btn-danger btn-sm"
-                       onclick="return confirm('Delete this supplier?')">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-
-            {% empty %}
-            <tr>
-                <td colspan="5" class="text-center">No suppliers found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-</div>
+</table>
 
 {% endblock %}

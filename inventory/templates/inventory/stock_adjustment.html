@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block page_title %}Adjust Stock{% endblock %}
+
+{% block content %}
+<h2>Adjust Stock</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label>Product</label>
+        <input type="text" class="form-control" value="{{ product.name }}" disabled>
+    </div>
+
+    <div class="form-group">
+        <label>Current Stock</label>
+        <input type="number" class="form-control" value="{{ product.stock }}" disabled>
+    </div>
+
+    <div class="form-group">
+        <label>Adjustment Quantity</label>
+        <input type="number" name="quantity" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label>Reason</label>
+        <textarea name="reason" class="form-control" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Stock</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+
+</form>
+
+{% endblock %}

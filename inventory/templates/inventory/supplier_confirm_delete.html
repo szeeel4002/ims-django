@@ -1,21 +1,14 @@
 {% extends "base.html" %}
-{% block page_title %}Delete Supplier{% endblock %}
+
 {% block content %}
+<h2>Delete Supplier</h2>
 
-<div class="container mt-4">
+<p>Are you sure you want to delete supplier: <strong>{{ supplier.name }}</strong>?</p>
 
-    <h2 class="mb-3 text-danger">Delete Supplier</h2>
-
-    <p>Are you sure you want to delete supplier:
-        <strong>{{ supplier.name }}</strong>?</p>
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <button class="btn btn-danger">Yes, Delete</button>
-        <a href="{% url 'supplier_list' %}" class="btn btn-secondary">Cancel</a>
-    </form>
-
-</div>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'supplier_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
 
 {% endblock %}
