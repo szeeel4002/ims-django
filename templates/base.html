@@ -1,76 +1,58 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}IMS{% endblock %}</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
 <body>
 
-    <!-- =============== SIDEBAR =============== -->
-    <div class="sidebar">
-        <h2>IMS</h2>
+<div class="layout">
 
-        <a href="{% url 'dashboard' %}"
-           class="{% if request.path == '/' %}active{% endif %}">
-            Dashboard
-        </a>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <h2 class="logo">IMS</h2>
 
-        <a href="{% url 'inventory_home' %}">Inventory</a>
-        <a href="{% url 'add_purchase' %}">Add Purchase</a>
-        <a href="{% url 'add_sale' %}">Add Sale</a>
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/inventory/products/">Products</a>
+            <a href="/inventory/customers/">Customers</a>
+            <a href="/inventory/suppliers/">Suppliers</a>
+            <a href="/purchases/">Purchases</a>
+            <a href="/sales/">Sales</a>
 
-        <!-- Low Stock alert — Shown if items low -->
-        {% if alert_low_stock %}
-        <div class="alert-box">
-            ⚠ Low Stock Items: <strong>{{ alert_low_stock|length }}</strong>
+            <h4 class="menu-title">Reports</h4>
+            <a href="/reports/purchases/">Purchase Report</a>
+            <a href="/reports/sales/">Sales Report</a>
+            <a href="/reports/stock/">Stock Report</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            {% if request.user.is_authenticated %}
+                <p class="username">Hello, {{ request.user.username }}</p>
+                <a class="logout-btn" href="/accounts/logout/">Logout</a>
+            {% endif %}
         </div>
-        {% endif %}
+    </aside>
 
-        <!-- Admin Panel (only visible to superuser) -->
-        {% if request.user.is_superuser %}
-        <a href="/admin/" style="color:white; background:#222; padding:8px; border-radius:6px; margin-top:10px;">
-            ⚙ Admin Panel
-        </a>
-        {% endif %}
+    <!-- Content Area -->
+    <main class="main-area">
+        <header class="page-header">
+            <h1>{% block page_title %}Page{% endblock %}</h1>
+        </header>
 
-        <a href="{% url 'logout' %}" style="margin-top:20px; color:#f87171;">
-            Logout
-        </a>
+        <section class="content">
+            {% block content %}
+            {% endblock %}
+        </section>
+    </main>
 
-        <footer>© 2025 IMS</footer>
-    </div>
-
-    <!-- =============== MAIN CONTENT =============== -->
-    <div class="main-content">
-
-        <!-- NAVBAR -->
-        <div class="navbar">
-            <h1>{% block page_title %}Dashboard{% endblock %}</h1>
-
-            <div class="user-info">
-                Hi, {{ request.user.username }}
-            </div>
-        </div>
-
-        <!-- DYNAMIC PAGE CONTENT -->
-        {% block content %}{% endblock %}
-    </div>
-    {% if low_stock_sample %}
-<div class="alert alert-warning alert-dismissible fade show m-2" role="alert">
-    <strong>Low Stock Alert:</strong>
-    {% for p in low_stock_sample %}
-        {{ p.name }} ({{ p.quantity }}){% if not forloop.last %}, {% endif %}
-    {% endfor %}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
-{% endif %}
-
 
 </body>
 </html>
+ 

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Stock Report{% endblock %}
+{% block page_title %}Stock Report{% endblock %}
+
+{% block content %}
+
+<h2>Stock Overview</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Stock Qty</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for p in products %}
+        <tr {% if p.quantity < 10 %} style="background:#ffe3e3"{% endif %}>
+            <td>{{ p.name }}</td>
+            <td>{{ p.category }}</td>
+            <td>{{ p.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if low_stock %}
+<div class="low-stock-alert">
+    <h3>⚠ Low Stock Items</h3>
+    <ul>
+        {% for p in low_stock %}
+        <li>{{ p.name }} — Only {{ p.quantity }} left</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% endblock %}
