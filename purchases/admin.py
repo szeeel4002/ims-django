@@ -3,6 +3,6 @@ from .models import Purchase
 
 @admin.register(Purchase)
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ("date", "product", "supplier", "quantity", "total_price")
-    list_filter = ("date", "supplier")
-    search_fields = ("product__name", "supplier__name")
+    list_display = ("supplier", "product", "quantity", "price_per_unit", "created_at")
+    search_fields = ("supplier__name", "product__name")
+    list_filter = ("supplier", "product")

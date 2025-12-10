@@ -1,12 +1,53 @@
 {% extends "base.html" %}
+{% block page_title %}Edit Purchase{% endblock %}
 
 {% block content %}
-<h2>Edit Purchase</h2>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary">Update Purchase</button>
-</form>
+<div class="container mt-4">
+    <h2 class="mb-3">Edit Purchase</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Supplier</label>
+            <select name="supplier" class="form-control" required>
+                <option value="">Select Supplier</option>
+                {% for s in suppliers %}
+                    <option value="{{ s.id }}" {% if purchase.supplier.id == s.id %}selected{% endif %}>
+                        {{ s.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Product</label>
+            <select name="product" class="form-control" required>
+                <option value="">Select Product</option>
+                {% for p in products %}
+                    <option value="{{ p.id }}" {% if purchase.product.id == p.id %}selected{% endif %}>
+                        {{ p.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" name="quantity" class="form-control" required min="1"
+                   value="{{ purchase.quantity }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Price per Unit</label>
+            <input type="number" step="0.01" name="price_per_unit" class="form-control" required
+                   value="{{ purchase.price_per_unit }}">
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Purchase</button>
+        <a href="{% url 'purchase_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
 
 {% endblock %}

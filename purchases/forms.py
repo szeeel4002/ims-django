@@ -4,9 +4,4 @@ from .models import Purchase
 class PurchaseForm(forms.ModelForm):
     class Meta:
         model = Purchase
-        fields = ["product", "quantity", "price_per_unit"]
-        widgets = {
-            "product": forms.Select(attrs={"class": "form-control"}),
-            "quantity": forms.NumberInput(attrs={"class": "form-control"}),
-            "price_per_unit": forms.NumberInput(attrs={"class": "form-control"}),
-        }
+        fields = ["supplier", "product", "quantity", "price_per_unit"]

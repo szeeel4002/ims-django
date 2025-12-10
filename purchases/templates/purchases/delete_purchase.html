@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block page_title %}Delete Purchase{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="text-danger mb-3">Confirm Delete</h2>
+
+    <p>Are you sure you want to delete this purchase?</p>
+
+    <ul>
+        <li><strong>Supplier:</strong> {{ purchase.supplier.name }}</li>
+        <li><strong>Product:</strong> {{ purchase.product.name }}</li>
+        <li><strong>Quantity:</strong> {{ purchase.quantity }}</li>
+        <li><strong>Price per Unit:</strong> ₹{{ purchase.price_per_unit }}</li>
+        <li><strong>Total Price:</strong> ₹{{ purchase.total_price }}</li>
+    </ul>
+
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Yes, Delete</button>
+        <a href="{% url 'purchase_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

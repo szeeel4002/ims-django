@@ -1,107 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>Invoice #{{ sale.id }}</title>
-
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .info {
-            margin-bottom: 20px;
-        }
-
-        .info p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 25px;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #444;
-            text-align: left;
-        }
-
-        th {
-            background: #f2f2f2;
-        }
-
-        .total-row {
-            font-weight: bold;
-            background: #f9f9f9;
-        }
-
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 13px;
-            color: #555;
-        }
+        body { font-family: Arial; padding: 40px; }
+        .invoice-box { border: 1px solid #ccc; padding: 20px; }
+        h2 { margin-bottom: 10px; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        td, th { padding: 8px; border: 1px solid #ccc; }
     </style>
 </head>
 
 <body>
+    <div class="invoice-box">
+        <h2>Invoice</h2>
 
-<div class="header">
-    <h1>INVOICE</h1>
-    <p>Invoice #: {{ sale.id }}</p>
-    <p>Date: {{ sale.date }}</p>
-</div>
+        <p><strong>Invoice ID:</strong> {{ sale.id }}</p>
+        <p><strong>Date:</strong> {{ sale.date }}</p>
 
-<div class="info">
-    <p><strong>Customer:</strong> {{ sale.customer_name|default:"N/A" }}</p>
-    <p><strong>Product:</strong> {{ sale.product.name }}</p>
-</div>
+        <p><strong>Customer:</strong> {{ sale.customer.name }}</p>
 
-<table>
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price/Unit (₹)</th>
-            <th>Total (₹)</th>
-        </tr>
-    </thead>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
 
-    <tbody>
-        <tr>
-            <td>{{ sale.product.name }}</td>
-            <td>{{ sale.quantity }}</td>
-            <td>{{ sale.price_per_unit }}</td>
-            <td>{{ sale.total_price }}</td>
-        </tr>
-    </tbody>
-
-    <tfoot>
-        <tr class="total-row">
-            <td colspan="3" align="right">Grand Total:</td>
-            <td>₹ {{ sale.total_price }}</td>
-        </tr>
-    </tfoot>
-</table>
-
-<div class="footer">
-    <p>Thank you for your purchase!</p>
-</div>
-
+            <tr>
+                <td>{{ sale.product.name }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>₹{{ sale.price_per_unit }}</td>
+                <td>₹{{ sale.total_price }}</td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>

@@ -3,6 +3,6 @@ from .models import Sale
 
 @admin.register(Sale)
 class SaleAdmin(admin.ModelAdmin):
-    list_display = ("date", "product", "customer", "quantity", "total_price")
-    list_filter = ("date", "customer")
-    search_fields = ("product__name", "customer__name")
+    list_display = ("customer", "product", "quantity", "price_per_unit", "date")
+    search_fields = ("customer__name", "product__name")
+    list_filter = ("customer", "product")
