@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,48 +12,46 @@
 
 <body>
 
-<div class="layout">
+    <div class="layout">
 
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <h2 class="logo">IMS</h2>
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h2 class="logo">IMS</h2>
 
-        <nav>
-            <a href="/">Dashboard</a>
-            <a href="/inventory/products/">Products</a>
-            <a href="/inventory/customers/">Customers</a>
-            <a href="/inventory/suppliers/">Suppliers</a>
-            <a href="/purchases/">Purchases</a>
-            <a href="/sales/">Sales</a>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'product_list' %}">Products</a></li>
+            <li><a href="{% url 'customer_list' %}">Customers</a></li>
+            <li><a href="{% url 'supplier_list' %}">Suppliers</a></li>
+            <li><a href="{% url 'purchase_list' %}">Purchases</a></li>
+            <li><a href="{% url 'sales_list' %}">Sales</a></li>
 
-            <h4 class="menu-title">Reports</h4>
-            <a href="/reports/purchases/">Purchase Report</a>
-            <a href="/reports/sales/">Sales Report</a>
-            <a href="/reports/stock/">Stock Report</a>
-        </nav>
+            <li>Reports</li>
+            <li><a href="{% url 'purchase_report' %}">Purchase Report</a></li>
+            <li><a href="{% url 'sales_report' %}">Sales Report</a></li>
+            <li><a href="{% url 'stock_report' %}">Stock Report</a></li>
 
-        <div class="sidebar-footer">
-            {% if request.user.is_authenticated %}
+            <div class="sidebar-footer">
+                {% if request.user.is_authenticated %}
                 <p class="username">Hello, {{ request.user.username }}</p>
                 <a class="logout-btn" href="/accounts/logout/">Logout</a>
-            {% endif %}
-        </div>
-    </aside>
+                {% endif %}
+            </div>
+        </aside>
 
-    <!-- Content Area -->
-    <main class="main-area">
-        <header class="page-header">
-            <h1>{% block page_title %}Page{% endblock %}</h1>
-        </header>
+        <!-- Content Area -->
+        <main class="main-area">
+            <header class="page-header">
+                <h1>{% block page_title %}Page{% endblock %}</h1>
+            </header>
 
-        <section class="content">
-            {% block content %}
-            {% endblock %}
-        </section>
-    </main>
+            <section class="content">
+                {% block content %}
+                {% endblock %}
+            </section>
+        </main>
 
-</div>
+    </div>
 
 </body>
+
 </html>
- 

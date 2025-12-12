@@ -2,24 +2,26 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Dashboard / Home
-    path("", views.dashboard, name="dashboard"),
+    path('', views.dashboard, name='dashboard'),
 
     # Products
-    path("products/", views.product_list, name="product_list"),
-    path("products/add/", views.product_create, name="product_create"),
-    path("products/<int:pk>/edit/", views.product_edit, name="product_edit"),
-    path("products/<int:pk>/delete/", views.product_delete, name="product_delete"),
-
-    # Suppliers
-    path("suppliers/", views.supplier_list, name="supplier_list"),
-    path("suppliers/add/", views.supplier_create, name="supplier_create"),
-    path("suppliers/<int:pk>/edit/", views.supplier_edit, name="supplier_edit"),
-    path("suppliers/<int:pk>/delete/", views.supplier_delete, name="supplier_delete"),
+    path('products/', views.product_list, name='product_list'),
+    path('products/add/', views.add_product, name='add_product'),
 
     # Customers
-    path("customers/", views.customer_list, name="customer_list"),
-    path("customers/add/", views.customer_create, name="customer_create"),
-    path("customers/<int:pk>/edit/", views.customer_edit, name="customer_edit"),
-    path("customers/<int:pk>/delete/", views.customer_delete, name="customer_delete"),
+    path('customers/', views.customer_list, name='customer_list'),
+
+    # Suppliers
+    path('suppliers/', views.supplier_list, name='supplier_list'),
+
+    # Purchases
+    path('purchases/', views.purchase_list, name='purchase_list'),
+
+    # Sales
+    path('sales/', views.sales_list, name='sales_list'),
+
+    # Reports
+    path('report/purchase/', views.purchase_report, name='purchase_report'),
+    path('report/sales/', views.sales_report, name='sales_report'),
+    path('report/stock/', views.stock_report, name='stock_report'),
 ]
