@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.urls import path
+from .views import home, product_list
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
@@ -24,4 +26,6 @@ urlpatterns = [
     path('report/purchase/', views.purchase_report, name='purchase_report'),
     path('report/sales/', views.sales_report, name='sales_report'),
     path('report/stock/', views.stock_report, name='stock_report'),
+    path("", home, name="home"),
+    path("products/", product_list, name="product_list"),
 ]
