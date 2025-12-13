@@ -30,6 +30,13 @@
         </tr>
         {% endfor %}
     </tbody>
+    <h2>Purchase Report</h2>
+    <ul>
+        {% for p in purchases %}
+        <li>{{ p.product }} - {{ p.quantity }} ({{ p.created_at }})</li>
+        {% endfor %}
+    </ul>
+
 </table>
 
 <div class="report-summary">

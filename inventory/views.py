@@ -1,13 +1,31 @@
+
 from django.shortcuts import render
+from .models import Product
+
+def home(request):
+    return render(request, "inventory/home.html")
+
 
 def dashboard(request):
     return render(request, 'dashboard.html')
 
 def product_list(request):
-    return render(request, 'inventory/product_list.html')
+    products = Product.objects.all()
+    return render(request, "inventory/product_list.html", {"products": products})
+
+from django.shortcuts import render, redirect
+from .models import Product
 
 def add_product(request):
-    return render(request, 'inventory/add_product.html')
+    if request.method == "POST":
+        Product.objects.create(
+            name=request.POST["name"],
+            price=request.POST["price"],
+            stock=request.POST["stock"]
+        )
+        return redirect("product_list")
+    return render(request, "inventory/add_product.html")
+
 
 def customer_list(request):
     return render(request, 'inventory/customer_list.html')

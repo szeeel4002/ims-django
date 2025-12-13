@@ -3,13 +3,14 @@
 {% block page_title %}Add Product{% endblock %}
 
 {% block content %}
+{% extends "base.html" %}
+{% block content %}
 <h2>Add Product</h2>
-
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <button class="btn btn-primary" type="submit">Save</button>
-    <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+<form method="post">
+{% csrf_token %}
+<input name="name" placeholder="Name"><br>
+<input name="price" placeholder="Price"><br>
+<input name="stock" placeholder="Stock"><br>
+<button>Add</button>
 </form>
 {% endblock %}

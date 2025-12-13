@@ -6,9 +6,13 @@ from .views import home, product_list
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
 
+    path("", home, name="home"),
+    path("products/", product_list, name="product_list"),
+
     # Products
     path('products/', views.product_list, name='product_list'),
     path('products/add/', views.add_product, name='add_product'),
+    path("add/", views.add_product, name="add_product"),
 
     # Customers
     path('customers/', views.customer_list, name='customer_list'),

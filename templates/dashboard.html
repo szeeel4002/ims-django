@@ -1,73 +1,47 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            padding: 40px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        a {
+            text-decoration: none;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.1);
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+        .card:hover {
+            background: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
 
-{% block page_title %}Dashboard{% endblock %}
+<h1>Inventory Management System</h1>
 
-{% block content %}
-<div class="container mt-4">
-
-    <h2 class="mb-4">Dashboard Overview</h2>
-    <p>Welcome {{ request.user.username }}! Your IMS is running successfully.</p>
-
-    <div class="row mt-4">
-        <!-- Total Products -->
-        <div class="col-md-4">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Total Products</h5>
-                    <p class="card-text display-6">{{ total_products }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Suppliers -->
-        <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Total Suppliers</h5>
-                    <p class="card-text display-6">{{ total_suppliers }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Customers -->
-        <div class="col-md-4">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Total Customers</h5>
-                    <p class="card-text display-6">{{ total_customers }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Low Stock Alert Section -->
-    <div class="card mt-4">
-        <div class="card-header bg-danger text-white">
-            <h5>Low Stock Products (Below 5)</h5>
-        </div>
-        <div class="card-body">
-            {% if low_stock_products %}
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Stock</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in low_stock_products %}
-                    <tr>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.stock }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p class="text-success">All products have sufficient stock.</p>
-            {% endif %}
-        </div>
-    </div>
-
+<div class="grid">
+    <a href="/inventory/products/"><div class="card">📦 Products</div></a>
+    <a href="/purchases/"><div class="card">🛒 Purchases</div></a>
+    <a href="/sales/"><div class="card">💰 Sales</div></a>
+    <a href="/reports/"><div class="card">📊 Reports</div></a>
+    <a href="/accounts/logout/"><div class="card">🚪 Logout</div></a>
 </div>
-{% endblock %}
+
+</body>
+</html>

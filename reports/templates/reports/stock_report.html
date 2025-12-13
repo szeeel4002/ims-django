@@ -17,13 +17,23 @@
 
     <tbody>
         {% for p in products %}
-        <tr {% if p.quantity < 10 %} style="background:#ffe3e3"{% endif %}>
+        <tr {% if p.quantity < 10 %} style="background:#ffe3e3" {% endif %}>
             <td>{{ p.name }}</td>
             <td>{{ p.category }}</td>
             <td>{{ p.quantity }}</td>
         </tr>
         {% endfor %}
     </tbody>
+    <h2>Stock Report</h2>
+    <h3>Low Stock</h3>
+    <ul>
+        {% for p in low_stock %}
+        <li>{{ p.name }} - {{ p.stock }}</li>
+        {% empty %}
+        <li>No low stock items</li>
+        {% endfor %}
+    </ul>
+
 </table>
 
 {% if low_stock %}

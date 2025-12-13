@@ -1,151 +1,44 @@
-/* ----- GLOBAL LAYOUT ----- */
 body {
-    margin: 0;
-    padding: 0;
-    background: #f5f6fa;
-    font-family: "Segoe UI", sans-serif;
+    font-family: Arial;
+    background: #f4f6f8;
 }
 
-.layout {
-    display: flex;
-}
-
-/* ----- SIDEBAR ----- */
-.sidebar {
-    width: 240px;
+.navbar {
     background: #2c3e50;
-    color: white;
-    height: 100vh;
-    padding: 20px;
-    position: fixed;
-}
-
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.sidebar nav a {
-    display: block;
-    padding: 12px;
-    color: #ecf0f1;
-    text-decoration: none;
-    font-size: 15px;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-.sidebar nav a:hover {
-    background: #34495e;
-}
-
-.menu-title {
-    margin-top: 20px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    opacity: 0.7;
-}
-
-/* ----- SIDEBAR FOOTER ----- */
-.sidebar-footer {
-    position: absolute;
-    bottom: 20px;
-    width: 200px;
-}
-
-.username {
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.logout-btn {
-    display: block;
     padding: 10px;
-    background: #c0392b;
+}
+
+.navbar a {
     color: white;
-    text-align: center;
+    margin-right: 15px;
     text-decoration: none;
-    border-radius: 6px;
 }
 
-.logout-btn:hover {
-    background: #e74c3c;
-}
-
-/* ----- MAIN AREA ----- */
-.main-area {
-    margin-left: 260px;
-    width: calc(100% - 260px);
+.container {
     padding: 20px;
 }
 
-.page-header h1 {
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-/* ----- TABLES ----- */
-.table {
+table {
     width: 100%;
     border-collapse: collapse;
     background: white;
-    border-radius: 8px;
-    overflow: hidden;
 }
 
-.table thead {
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background: #34495e;
+    color: white;
+}
+
+.btn {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 8px 12px;
     background: #3498db;
     color: white;
-}
-
-.table th,
-.table td {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-}
-
-.table tr:hover {
-    background: #f0f6ff;
-}
-
-/* ----- BUTTONS ----- */
-.btn-primary {
-    background: #4a4ef5;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.btn-primary:hover {
-    background: #3a3dd3;
-}
-
-.btn-danger {
-    background: #e74c3c;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 6px;
-    border: none;
-}
-
-.btn-danger:hover {
-    background: #c0392b;
-}
-
-/* ----- FORMS ----- */
-input, select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 15px;
-}
-
-.form-card {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    text-decoration: none;
 }

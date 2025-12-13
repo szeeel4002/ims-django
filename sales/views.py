@@ -3,27 +3,30 @@ from .models import Sale
 from .forms import SaleForm
 from inventory.models import Customer, Product
 
+def sales_list(request):
+    sales = Sale.objects.all().order_by("-created_at")
+    return render(request, "sales/sales_list.html", {"sales": sales})
 
-def sale_list(request):
-    sales = Sale.objects.all().order_by("-date")
-    return render(request, "sales/sale_list.html", {"sales": sales})
 
 
 def add_sale(request):
     if request.method == "POST":
-        form = SaleForm(request.POST)
-        if form.is_valid():
-            sale = form.save()
-            return redirect("sale_invoice", sale_id=sale.id)
-    else:
-        form = SaleForm()
+        product = Product.objects.get(id=request.POST["product"])
+        qty = int(request.POST["quantity"])
 
-    return render(request, "sales/add_sale.html", {
-        "form": form,
-        "customers": Customer.objects.all(),
-        "products": Product.objects.all(),
-    })
+        if product.stock < qty:
+            return render(request, "sales/error.html")
 
+        Sale.objects.create(
+            product=product,
+            quantity=qty,
+            price=request.POST["price"]
+        )
+
+        product.stock -= qty
+        product.save()
+
+        return redirect("sales_list")
 
 def edit_sale(request, sale_id):
     sale = get_object_or_404(Sale, id=sale_id)

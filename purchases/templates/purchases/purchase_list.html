@@ -1,48 +1,29 @@
 {% extends "base.html" %}
-{% block page_title %}Purchases{% endblock %}
+
+{% block title %}Purchases{% endblock %}
 
 {% block content %}
+<h2>Purchases</h2>
 
-<div class="container mt-4">
-    <h2 class="mb-3">Purchase Records</h2>
+<table border="1">
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Date</th>
+    </tr>
 
-    <a href="{% url 'add_purchase' %}" class="btn btn-primary mb-3">Add Purchase</a>
-
-    {% if purchases %}
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Supplier</th>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Price/Unit</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for purchase in purchases %}
-                    <tr>
-                        <td>{{ purchase.date }}</td>
-                        <td>{{ purchase.supplier.name }}</td>
-                        <td>{{ purchase.product.name }}</td>
-                        <td>{{ purchase.quantity }}</td>
-                        <td>{{ purchase.price_per_unit }}</td>
-                        <td>{{ purchase.total_price }}</td>
-                        <td>
-                            <a href="{% url 'edit_purchase' purchase.id %}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="{% url 'delete_purchase' purchase.id %}" class="btn btn-sm btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-    {% else %}
-        <p class="text-muted">No purchases recorded yet.</p>
-    {% endif %}
-</div>
-
+    {% for purchase in purchases %}
+    <tr>
+        <td>{{ purchase.product.name }}</td>
+        <td>{{ purchase.quantity }}</td>
+        <td>{{ purchase.price }}</td>
+        <td>{{ purchase.date }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">No purchases found</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

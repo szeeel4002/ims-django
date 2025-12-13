@@ -8,15 +8,8 @@ from inventory.models import Product
 # PURCHASE REPORT
 # ---------------------------
 def purchase_report(request):
-    purchases = Purchase.objects.select_related("product", "supplier").order_by("-date")
-    total_spent = sum(p.total_cost for p in purchases)
-
-    context = {
-        "purchases": purchases,
-        "total_spent": total_spent,
-    }
-    return render(request, "reports/purchase_report.html", context)
-
+    purchases = Purchase.objects.order_by("-created_at")
+    return render(request, "reports/purchase_report.html", {"purchases": purchases})
 
 # ---------------------------
 # SALES REPORT
@@ -36,11 +29,16 @@ def sales_report(request):
 # STOCK REPORT
 # ---------------------------
 def stock_report(request):
-    products = Product.objects.all().order_by("name")
-    low_stock = products.filter(quantity__lt=10)
-
-    context = {
+    products = Product.objects.all()
+    low_stock = products.filter(stock__lt=10)
+    return render(request, "reports/stock_report.html", {
         "products": products,
-        "low_stock": low_stock,
-    }
-    return render(request, "reports/stock_report.html", context)
+        "low_stock": low_stock
+    })
+
+
+
+
+def report_home(request):
+    products = Product.objects.all()
+    return render(request, "reports/report_home.html", {"products": products})
