@@ -42,3 +42,23 @@ def stock_report(request):
 def report_home(request):
     products = Product.objects.all()
     return render(request, "reports/report_home.html", {"products": products})
+
+from django.shortcuts import render
+from inventory.models import Product, PurchaseBatch
+from sales.models import Sale
+
+def fifo_report(request):
+    sales = Sale.objects.all().order_by("-created_at")
+
+    report = []
+    for sale in sales:
+        report.append({
+            "product": sale.product.name,
+            "quantity": sale.quantity,
+            "selling_price": sale.selling_price,
+            "cost_price": sale.cost_price,
+            "profit": sale.profit,
+            "date": sale.created_at,
+        })
+
+    return render(request, "reports/fifo_report.html", {"report": report})

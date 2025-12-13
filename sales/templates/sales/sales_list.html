@@ -1,31 +1,27 @@
 {% extends "base.html" %}
-
 {% block content %}
+
 <h2>Sales</h2>
 
-<a class="btn" href="{% url 'add_sale' %}">Add Sale</a>
-
-<table>
+<table border="1" cellpadding="8">
     <tr>
         <th>Product</th>
         <th>Qty</th>
         <th>Selling Price</th>
-        <th>Cost Price (FIFO)</th>
+        <th>Cost Price</th>
         <th>Profit</th>
         <th>Date</th>
     </tr>
-
-    {% for sale in sales %}
+    {% for s in sales %}
     <tr>
-        <td>{{ sale.product.name }}</td>
-        <td>{{ sale.quantity }}</td>
-        <td>{{ sale.selling_price }}</td>
-        <td>{{ sale.cost_price }}</td>
-        <td>{{ sale.profit }}</td>
-        <td>{{ sale.created_at|date:"d M Y" }}</td>
+        <td>{{ s.product.name }}</td>
+        <td>{{ s.quantity }}</td>
+        <td>{{ s.selling_price }}</td>
+        <td>{{ s.cost_price }}</td>
+        <td>{{ s.profit }}</td>
+        <td>{{ s.created_at }}</td>
     </tr>
-    {% empty %}
-    <tr><td colspan="6">No sales yet</td></tr>
     {% endfor %}
 </table>
+
 {% endblock %}

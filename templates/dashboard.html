@@ -1,47 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f6f8;
-            padding: 40px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-        a {
-            text-decoration: none;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,.1);
-            text-align: center;
-            font-size: 18px;
-            color: #333;
-        }
-        .card:hover {
-            background: #007bff;
-            color: white;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
 
-<h1>Inventory Management System</h1>
+<h2>Inventory Management Dashboard</h2>
 
-<div class="grid">
-    <a href="/inventory/products/"><div class="card">📦 Products</div></a>
-    <a href="/purchases/"><div class="card">🛒 Purchases</div></a>
-    <a href="/sales/"><div class="card">💰 Sales</div></a>
-    <a href="/reports/"><div class="card">📊 Reports</div></a>
-    <a href="/accounts/logout/"><div class="card">🚪 Logout</div></a>
-</div>
+<ul>
+    <li><a href="/inventory/products/">Manage Products</a></li>
+    <li><a href="/purchases/">Add Purchases</a></li>
+    <li><a href="/sales/">Record Sales</a></li>
+    <li><a href="/reports/stock/">Stock Report</a></li>
+    <li><a href="/reports/purchases/">Purchase Report</a></li>
+</ul>
 
-</body>
-</html>
+{% endblock %}

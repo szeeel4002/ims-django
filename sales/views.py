@@ -9,6 +9,7 @@ def sales_list(request):
 
 
 
+
 def add_sale(request):
     if request.method == "POST":
         product = Product.objects.get(id=request.POST["product"])

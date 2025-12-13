@@ -2,6 +2,11 @@
 from django.shortcuts import render
 from .models import Product
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Product
+from django.contrib import messages
+
+
 def home(request):
     return render(request, "inventory/home.html")
 
@@ -26,6 +31,21 @@ def add_product(request):
         return redirect("product_list")
     return render(request, "inventory/add_product.html")
 
+def edit_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    if request.method == "POST":
+        product.name = request.POST.get("name")
+        product.price = request.POST.get("price")
+        product.stock = request.POST.get("stock")
+        product.save()
+
+        messages.success(request, "Product updated successfully")
+        return redirect("product_list")
+
+    return render(request, "inventory/edit_product.html", {"product": product})
+
+
 
 def customer_list(request):
     return render(request, 'inventory/customer_list.html')
@@ -48,3 +68,29 @@ def sales_report(request):
 
 def stock_report(request):
     return render(request, 'reports/stock_report.html')
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Product
+from django.contrib import messages
+
+
+def edit_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    if request.method == "POST":
+        product.name = request.POST.get("name")
+        product.price = request.POST.get("price")
+        product.stock = request.POST.get("stock")
+        product.save()
+
+        messages.success(request, "Product updated successfully")
+        return redirect("product_list")
+
+    return render(request, "inventory/edit_product.html", {"product": product})
+
+
+def delete_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.delete()
+    messages.success(request, "Product deleted successfully")
+    return redirect("product_list")

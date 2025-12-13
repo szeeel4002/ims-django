@@ -1,50 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Stock Report{% endblock %}
-{% block page_title %}Stock Report{% endblock %}
-
 {% block content %}
 
-<h2>Stock Overview</h2>
+<h2>Stock Report</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Category</th>
-            <th>Stock Qty</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for p in products %}
-        <tr {% if p.quantity < 10 %} style="background:#ffe3e3" {% endif %}>
-            <td>{{ p.name }}</td>
-            <td>{{ p.category }}</td>
-            <td>{{ p.quantity }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-    <h2>Stock Report</h2>
-    <h3>Low Stock</h3>
-    <ul>
-        {% for p in low_stock %}
-        <li>{{ p.name }} - {{ p.stock }}</li>
-        {% empty %}
-        <li>No low stock items</li>
-        {% endfor %}
-    </ul>
-
-</table>
-
-{% if low_stock %}
-<div class="low-stock-alert">
-    <h3>⚠ Low Stock Items</h3>
-    <ul>
-        {% for p in low_stock %}
-        <li>{{ p.name }} — Only {{ p.quantity }} left</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
+<ul>
+{% for p in products %}
+    <li>{{ p.name }} — {{ p.stock }}</li>
+{% endfor %}
+</ul>
 
 {% endblock %}
