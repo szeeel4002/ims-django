@@ -1,0 +1,57 @@
+/* ===== GLOBAL ===== */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+    font-weight: 600;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: #1f2937;
+}
+
+.navbar a {
+    color: #fff !important;
+}
+
+/* ===== CONTAINER ===== */
+.page-container {
+    padding: 30px;
+}
+
+/* ===== CARD ===== */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    background-color: #2563eb;
+    border: none;
+}
+
+.btn-danger {
+    border: none;
+}
+
+/* ===== TABLE ===== */
+table {
+    background: #fff;
+}
+
+.table th {
+    background: #e5e7eb;
+}
+
+/* ===== FORMS ===== */
+input, select {
+    border-radius: 8px !important;
+}

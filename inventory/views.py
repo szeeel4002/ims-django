@@ -32,13 +32,14 @@ from .models import Product
 
 def add_product(request):
     if request.method == "POST":
-        Product.objects.create(
-            name=request.POST["name"],
-            price=request.POST["price"],
-            stock=request.POST["stock"]
-        )
-        return redirect("product_list")
-    return render(request, "inventory/add_product.html")
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("product_list")
+    else:
+        form = ProductForm()
+
+    return render(request, "inventory/add_product.html", {"form": form})
 
 def edit_product(request, pk):
     product = get_object_or_404(Product, pk=pk)

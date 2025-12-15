@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+{% endblock %}
+
 <h2>Delete Supplier</h2>
 
 <p>Are you sure you want to delete supplier: <strong>{{ supplier.name }}</strong>?</p>

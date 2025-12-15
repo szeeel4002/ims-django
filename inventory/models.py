@@ -38,11 +38,12 @@ class Customer(models.Model):
 
 # ==========================
 #        PRODUCT
-# ==========================
+# =========================
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    price = models.FloatField()
     stock = models.IntegerField(default=0)
+    price = models.FloatField()
 
     def __str__(self):
         return self.name
